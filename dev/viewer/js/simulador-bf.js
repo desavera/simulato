@@ -78,7 +78,8 @@
 		$scope.mockURL = 'http://raml-portal.atlas.b2w/api/v1/mock/offer-api/v1/offer/';
 		//$scope.marca1URL = '/americanas?product.id=128658397&sku.id=128658400';
 
-		$scope.pioURL = '/forecasting/';
+		$scope.appdir = '/simulador-bf/';
+		$scope.pioURL = 'forecasting/';
 
 
 		//
@@ -130,7 +131,7 @@
     			$http({
 			
 				method: 'POST',
-				url: $scope.pioURL,
+				url: $scope.appdir + $scope.pioURL,
 				headers: {'Content-Type': 'application/json','Accept': 'application/json'},
 				data : angular.toJson($scope.pioData),
 
@@ -166,7 +167,7 @@
 			$http({
 
 			    method: 'GET',
-			    url: $scope.marcaModel + $scope.productID_urlParam + $scope.pricesForm.itemID + $scope.sellerID_urlParam + $scope.skuID_urlParam + $scope.pricesForm.skuID,
+			    url: $scope.appdir + $scope.marcaModel + $scope.productID_urlParam + $scope.pricesForm.itemID + $scope.sellerID_urlParam + $scope.skuID_urlParam + $scope.pricesForm.skuID,
 
 			    headers: {
 			       'Authorization': 'Authorization: Basic cHJlZGljdDpwcmVkaWN0aW8=',
