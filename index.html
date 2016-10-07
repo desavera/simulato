@@ -1,0 +1,151 @@
+<html>  
+  <head>    
+
+      <link rel="stylesheet" type="text/css" href="css/jsxgraph.css" />
+      <script type="text/javascript" src="js/jsxgraphcore.js"></script>
+ 
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+      <!-- Bootstrap -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+  
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src="js/jquery.min.js"></script>
+
+      <!-- Include all compiled plugins (below), or include individual files as needed -->
+      <script src="js/bootstrap.min.js"></script>
+
+      <!-- PriceFormat -->
+      <script src="js/jquery.priceformat.min.js"></script>
+
+      <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+      <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+      <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+      <script src="js/respond.min.js"></script>
+      <![endif]-->
+
+      <!-- Custom CSS -->
+      <link href="css/b2w.css" rel="stylesheet">
+
+    
+       <script src="js/angular.js"></script>  
+       <script src="js/simulato.js"></script>  
+      
+       <title>SiMulato</title>    
+
+    </head>  
+    <body ng-app="SalesSimManager" ng-controller="SalesSimController">  
+
+   	<!-- Full Width Image Header with Logo -->
+    	<!-- Image backgrounds are set within the b2w.css file. -->
+    	<header class="image-bg-fluid-height">
+       	 <img class="img-responsive img-left" src="img/logo.png" alt="">
+    	</header>
+
+	<div class="panel panel-default">
+  	<div class="panel-heading">Entre com a Marca e o ID do Item</div>
+
+
+	<form name="pricesForm">  
+            <table>  
+                <tr>  
+                    <td>ID do Item</td>  
+                    <td><input required type="number" ng-model="pricesForm.itemID" class="spotcode" ng-minlength="4" style="text-transform:uppercase" ng-change="fetchPrices()"/></td>  
+                </tr>  
+                <tr>  
+                    <td>SKU do Item</td>  
+                    <td><input required type="number" ng-model="pricesForm.skuID" class="spotcode" ng-minlength="4" style="text-transform:uppercase" ng-change="fetchPrices()"/></td>  
+                </tr>  
+		<tr>
+		    <td>Marca do Item</td>
+		    <td><select data-ng-options="x as x for x in marcas" ng-model="marcaModel" ng-change="setMarca(marcaModel)"></select></td>
+                </tr>  
+            </table>  
+        </form>  
+	</div>
+	<div class="panel panel-default">
+  	<div class="panel-heading">Confirme os parâmetros para geração dos gráficos</div>
+	<form name="graphForm">  
+            <table>  
+                <tr>  
+                    <td>Preço Mínimo (R$)</td>  
+                    <td><input required type="text" min="0" name="myDecimal" ng-model="pricesForm.precoMIN" placeholder="Decimal" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.10" />
+                </tr>  
+                <tr>  
+                    <td>Preço Máximo (R$)</td>  
+                    <td><input required type="text" min="0" name="myDecimal" ng-model="pricesForm.precoMAX" placeholder="Decimal" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.10" /> 
+                </tr>  
+                <tr>  
+                    <td>Especificar Preço Competidor (R$)    <input type="checkbox" ng-model="precocomp" ></td>
+                    <td><input required type="text" min="0" name="myDecimal" ng-model="pricesForm.precoCOMP" ng-disabled="!precocomp" placeholder="Decimal" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.10" />
+                </tr>  
+                <tr>  
+                    <td>Amostragem</td>  
+                    <td><input required type="number" min="1" placeholder="Integer" ng-model="pricesForm.amostragem" ng-init="10" /></td>  
+                </tr>  
+                <tr>  
+                    <td>Predição Normal</td>  
+		    <td><input type="checkbox" ng-checked="false" ng-click="graphBox1=!graphBox1" ></td>
+                </tr>  
+                <tr>  
+                    <td>Predição Evento</td>  
+		    <td><input type="checkbox" ng-checked="false" ng-click="graphBox2=!graphBox2"></td>
+                </tr>  
+                <tr>  
+                    <td>Predição Black Friday</td>  
+		    <td><input type="checkbox" ng-checked="false" ng-click="graphBox3=!graphBox3"></td>
+                </tr>  
+                <tr>  
+                    <td colspan="2">
+                    	<input type="submit" value="Gerar Gráficos" class="blue-button" ng-click="salesPredict()" />
+		    </td>  
+                </tr>  
+            </table>  
+        </form>  
+	</div>
+	<div id="panelBox1" class="panel panel-default">
+  	<div class="panel-heading">Predição Normal</div>
+	<div id="box1" class="jxgbox" style="width:100%; height:30%;"></div>
+        <script type="text/javascript">
+
+		// div show control on checkbox
+		$("#panelBox1").hide();
+	</script>
+	</div>
+	<div id="panelBox2" class="panel panel-default">
+  	<div class="panel-heading">Predição Evento</div>
+	<div id="box2" class="jxgbox" style="width:100%; height:30%;"></div>
+        <script type="text/javascript">
+
+		// div show control on checkbox
+		$("#panelBox2").hide();
+
+	</script>
+	</div>
+	<div id="panelBox3" class="panel panel-default">
+  	<div class="panel-heading">Predição Black Friday</div>
+	<div id="box3" class="jxgbox" style="width:100%; height:30%;"></div>
+        <script type="text/javascript">
+
+		// div show control on checkbox
+		$("#panelBox3").hide();
+	</script>
+	</div>
+    	<footer>
+       	 <div class="container">
+       	     <div class="row">
+       	         <div class="col-lg-12">
+                    <p>Copyright &copy; B2W 2016</p>
+       	         </div>
+       	     </div>
+       	     <!-- /.row -->
+       	 </div>
+       	 <!-- /.container -->
+    	</footer>
+
+  </body>  
+</html> 
