@@ -67,7 +67,6 @@
 		    itemId : "",
 		    skuId : "",
 		    maPrcAvgUprice : "",
-		    avgCompetitorPrice : 2000,
 		    maVisits : 2000
 		};
 
@@ -117,6 +116,12 @@
 
                 $scope.pioCalc = function(i,count,panelID) {  
 
+		    $scope.pioData.itemId = $scope.pricesForm.itemID;
+		    $scope.pioData.skuId = $scope.pricesForm.skuID;
+
+		    if ($scope.pricesForm.precoCOMP)
+		    	$scope.pioData["avgCompetitorPrice"] = $scope.pricesForm.precoCOMP;
+
 		    	$scope.pioData.maPrcAvgUprice = i;
 
 			if (panelID === 1)
@@ -161,6 +166,8 @@
 
                 $scope.fetchPrices = function() {  
 
+			_clearFormData();
+
 			if ($scope.pricesForm.itemID && $scope.pricesForm.skuID) {
 
 			$http({
@@ -175,7 +182,7 @@
  			   data : angular.toJson($scope.pricesForm),
                    	 }).then(function successCallback(offers) {  
 
-				if(offers.data.offers === 0) alert ($scope.NO_PRODUCT_FOUND_ERR_MSG);
+				if(offers.data.offers.length === 0) alert ($scope.NO_PRODUCT_FOUND_ERR_MSG);
 
 				else {
 
@@ -185,19 +192,15 @@
 
                         		$scope.pricesForm.precoMIN = $scope.precoMIN.formatMoney(2,'.',',');
                         		$scope.pricesForm.precoMAX = $scope.precoMAX.formatMoney(2,'.',',');
-
                 			$scope.pricesForm.amostragem = 10;
 		    
-					$scope.pioData.itemId = $scope.pricesForm.itemID;
-					$scope.pioData.skuId = $scope.pricesForm.skuID;
 
-					//if ($scope.pricesForm.precoCOMP)
-		    			//	$scope.pioData.avgCompetitorPrice = $scope.pricesForm.precoCOMP;
 
 				}
 
                     }, function errorCallback(response) {  
                         console.log(response.statusText);  
+			alert ($scope.NO_PRODUCT_FOUND_ERR_MSG);
                     });  
 
 		    }
@@ -237,6 +240,23 @@
 			
 
 		    } else $("#panelBox3").hide();
+		};
+
+		$scope.updatePrecoMIN = function(preco) {
+
+		    $scope.pricesForm.precoMIN = preco;
+		};
+		$scope.updatePrecoMAX = function(preco) {
+
+		    $scope.pricesForm.precoMAX = preco;
+		};
+		$scope.updatePrecoCOMP = function(preco) {
+
+		    $scope.pricesForm.precoCOMP = preco;
+		};
+		$scope.updateAmostragem = function(amostragem) {
+
+		    $scope.pricesForm.amostragem = amostragem;
 		};
 
 		$scope.generateGraphCoords = function(panelID) {
@@ -294,31 +314,21 @@
 
 		};
 
-
-		//
-		// PRIVATE METHODS
-		//
-                function _success(response) {  
-                }  
-           
-                function _error(response) {  
-                    console.log(response.statusText);  
-                }  
-           
-                //Clear the form  
+                //Clear the pio form  
                 function _clearFormData() {  
 
 		    $scope.showBox1 = false;
 		    $scope.showBox2 = false;
 		    $scope.showBox3 = false;
                 	
-                    $scope.pricesForm.itemID = "";  
-                    $scope.pricesForm.precoMIN = "";                    
-                    $scope.pricesForm.precoMAX = "";                    
-                    $scope.pricesForm.precoCOMP = "";                    
+                    $scope.pricesForm.precoMIN = " ";                    
+                    $scope.pricesForm.precoMAX = " ";                    
+                    $scope.pricesForm.precoCOMP = " ";                    
 		
 		    $scope.graphBox1 = false;
 		    $scope.graphBox2 = false;
 		    $scope.graphBox3 = false;
                 };  
+
+           
             });  
