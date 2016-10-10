@@ -182,7 +182,11 @@
  			   data : angular.toJson($scope.pricesForm),
                    	 }).then(function successCallback(offers) {  
 
-				if(offers.data.offers.length === 0) alert ($scope.NO_PRODUCT_FOUND_ERR_MSG);
+				if(offers.data.offers.length === 0) {
+
+					alert ($scope.NO_PRODUCT_FOUND_ERR_MSG);
+					_clearFormData();
+				}
 
 				else {
 
@@ -190,9 +194,8 @@
                         		$scope.precoMIN = $scope.offers.listPrice - ($scope.offers.listPrice*10)/100;                    
                         		$scope.precoMAX = $scope.offers.listPrice + ($scope.offers.listPrice*10)/100;
 
-                        		$scope.pricesForm.precoMIN = $scope.precoMIN.formatMoney(2,'.',',');
-                        		$scope.pricesForm.precoMAX = $scope.precoMAX.formatMoney(2,'.',',');
-                			$scope.pricesForm.amostragem = 10;
+                        		$scope.pricesForm.precoMIN = $scope.precoMIN.formatMoney(2,'.','');
+                        		$scope.pricesForm.precoMAX = $scope.precoMAX.formatMoney(2,'.','');
 		    
 
 
@@ -242,6 +245,9 @@
 		    } else $("#panelBox3").hide();
 		};
 
+		//
+		// Mutators due to currency format
+
 		$scope.updatePrecoMIN = function(preco) {
 
 		    $scope.pricesForm.precoMIN = preco;
@@ -254,15 +260,13 @@
 
 		    $scope.pricesForm.precoCOMP = preco;
 		};
-		$scope.updateAmostragem = function(amostragem) {
-
-		    $scope.pricesForm.amostragem = amostragem;
-		};
 
 		$scope.generateGraphCoords = function(panelID) {
 
-			$scope.bbMINx = Math.ceil($scope.pricesForm.precoMIN.replace(/,/g , ""));
-			$scope.bbMAXx = Math.floor($scope.pricesForm.precoMAX.replace(/,/g , ""));
+			//$scope.bbMINx = Math.ceil($scope.pricesForm.precoMIN.replace(/,/g , ""));
+			//$scope.bbMAXx = Math.floor($scope.pricesForm.precoMAX.replace(/,/g , ""));
+			$scope.bbMINx = Math.ceil($scope.pricesForm.precoMIN);
+			$scope.bbMAXx = Math.floor($scope.pricesForm.precoMAX);
 
 			var step = Math.round(($scope.bbMAXx - $scope.bbMINx)/$scope.pricesForm.amostragem);
 
@@ -321,9 +325,12 @@
 		    $scope.showBox2 = false;
 		    $scope.showBox3 = false;
                 	
-                    $scope.pricesForm.precoMIN = " ";                    
-                    $scope.pricesForm.precoMAX = " ";                    
-                    $scope.pricesForm.precoCOMP = " ";                    
+                    $scope.pricesForm.precoMIN = '';                    
+                    $scope.pricesForm.precoMAX = '';                    
+                    $scope.pricesForm.precoCOMP = '';                    
+
+		    // default amostragem 
+                    $scope.pricesForm.amostragem = 10;                    
 		
 		    $scope.graphBox1 = false;
 		    $scope.graphBox2 = false;

@@ -73,11 +73,11 @@
             <table>  
                 <tr>  
                     <td>Preço Mínimo (R$)</td>  
-                    <td><input required type="text" min="0" name="myDecimal" ng-model="precoMIN" placeholder="Decimal" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-change="updatePrecoMIN(precoMIN)" step="0.10" />
+                    <td><input required type="text" min="0" name="myDecimal" ng-model="pricesForm.precoMIN" placeholder="Decimal" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.10" />
                 </tr>  
                 <tr>  
                     <td>Preço Máximo (R$)</td>  
-                    <td><input required type="text" min="0" name="myDecimal" ng-model="precoMAX" placeholder="Decimal" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" ng-change="updatePrecoMAX(precoMAX)" step="0.10" /> 
+                    <td><input required type="text" min="0" name="myDecimal" ng-model="pricesForm.precoMAX" placeholder="Decimal" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.10" /> 
                 </tr>  
                 <tr>  
                     <td>Especificar Preço Competidor (R$)    <input type="checkbox" ng-model="precoCOMP" ></td>
@@ -85,7 +85,7 @@
                 </tr>  
                 <tr>  
                     <td>Amostragem</td>  
-                    <td><input required type="number" min="1" placeholder="Integer" ng-model="amostragem" ng-init="10" ng-change="updateAmostragem(amostragem)" /></td>  
+                    <td><input required type="number" min="1" placeholder="Integer" ng-model="pricesForm.amostragem" ng-init="10" /></td>  
                 </tr>  
                 <tr>  
                     <td>Predição Normal</td>  
