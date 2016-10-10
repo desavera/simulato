@@ -1,0 +1,48 @@
+server {
+
+
+        listen 80;
+        root /usr/share/nginx/html;
+
+        location /forecasting/ {
+
+		proxy_pass http://api.forecasting-pio.atlas.b2w/v1/pio/queries.json;
+		# proxy_pass http://google.com;
+  		proxy_redirect http://api.forecasting-pio.atlas.b2w/v1/pio/queries.json /forecasting;
+  		# proxy_redirect http://google.com /forecasting;
+  		proxy_read_timeout 60s;
+
+  		# May not need or want to set Host. Should default to the above hostname.
+  		# proxy_set_header          Host            $host;
+  		# proxy_set_header          X-Real-IP       $remote_addr;
+  		# proxy_set_header          X-Forwarded-For $proxy_add_x_forwarded_for;
+
+		proxy_set_header  	    X-Real-IP  	    $remote_addr;
+		proxy_set_header  	    X-Forwarded-For $remote_addr;
+	}
+
+    	location /americanas/ {
+
+		proxy_pass http://api.americanas.atlas.b2w/api/v1/offer;
+        }
+
+    	location /shoptime/ {
+
+		proxy_pass http://api.shoptime.atlas.b2w/api/v1/offer;
+        }
+
+    	location /soubarato/ {
+
+		proxy_pass http://api.soubarato.atlas.b2w/api/v1/offer;
+        }
+
+    	location /submarino/ {
+
+		proxy_pass http://api.submarino.atlas.b2w/api/v1/offer;
+        }
+
+
+	error_log    /var/log/nginx/error.log debug;
+}
+
+
